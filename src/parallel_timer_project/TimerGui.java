@@ -27,10 +27,10 @@ public class TimerGui extends Application {
     private TextArea flaggedTimesArea;
     private TextField minutesInput , secondsInput;
     private Button flagButton;
-    private long timeElapsed = 0;   //bta3et el stopwatch
-    private long timerCountdown = 0;    //bta3et el counter
+    private long timeElapsed = 0;   //for stopwatch
+    private long timerCountdown = 0;    //for counter
     private boolean running = false;
-    private boolean isTimerMode = false;    //law false: stopwatch, law true: timer
+    private boolean isTimerMode = false;    //if false: stopwatch, if true: timer
     private Timer timer;
     private int id;
 
@@ -50,7 +50,7 @@ public class TimerGui extends Application {
         currentThreadId.setLayoutY(32);
         currentThreadId.setTextFill(Color.WHITE);
         
-//        System.out.println(id+1);     //print el id bta3 el thread
+//        System.out.println(id+1);     //print the ID of the thread
         
         timerLabel = new Label("00:00:00");
         timerLabel.setStyle("-fx-font-size: 36px;");
@@ -107,7 +107,7 @@ public class TimerGui extends Application {
         flagButton.setOnAction(e -> flagTime());
         modeButton.setOnAction(e -> switchMode(modeButton));
 
-        // Group components
+        // group components
         Group root = new Group(
             timerLabel,
             flaggedTimesArea,
@@ -121,10 +121,10 @@ public class TimerGui extends Application {
             currentThreadId
         );
 
-        // Scene and Stage
+        // scene and stage
         Scene scene = new Scene(root, 300, 350);
         
-        Random randGenerator = new Random(id+1);//+1
+        Random randGenerator = new Random(id+1); //+1
         int rgb[] = new int[3];
         for(int i=0;i<3;i++)
             rgb[i] = randGenerator.nextInt(0, 256);
@@ -176,7 +176,6 @@ public class TimerGui extends Application {
         if (!isTimerMode) {
             flaggedTimesArea.appendText("Flagged time: " + formatTime(timeElapsed) + "\n");
         }
-        
     }
 
     private void switchMode(Button modeButton) {
@@ -207,7 +206,7 @@ public class TimerGui extends Application {
     }
 
     private void startStopwatch() {
-        if (!running) {     //3ala4an law kan hwa aslan running, fa maye3mel4 object gdyd, ya3ny maye3mel4 7aga law dosna 3ala el start w hwa running
+        if (!running) {     //to prevent the creation of new object on clicking start, when the timer is already running (so nothing happens when we click start during its running)
             running = true;
             timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
@@ -226,7 +225,7 @@ public class TimerGui extends Application {
                 long minutes = Long.parseLong(minutesInput.getText());
                 long seconds = Long.parseLong(secondsInput.getText());
                 
-                if(timerCountdown == 0) //3ala4an law kan fi wa2t mtba2y lama 3amalna pause yrga3 w ykamel 3ala nafs el wa2t
+                if(timerCountdown == 0) //to resume counting on the previously elipsed time befor clicking pause
                     timerCountdown = minutes * 60 + seconds;
                 else
                     //do nothing
@@ -247,7 +246,7 @@ public class TimerGui extends Application {
                         } else {
                             timer.cancel();
                             running = false;
-                            javafx.application.Platform.runLater(() -> {    //esta5demna el platform.runlater, 3ala4an byn8ayar fi el gui w e7na fi thread mo5talef 3an el thread bta3 el gui
+                            javafx.application.Platform.runLater(() -> {    // we have used platform.runlater, cause we are making realtime changes on the gui using a thread different from the gui thread
                                 showAlert("Timer "+((int)(id+1))+", Notification","Time out",Alert.AlertType.INFORMATION);
                             });
                         }
