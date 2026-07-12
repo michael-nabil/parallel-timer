@@ -27,7 +27,6 @@ public class MainClass {
         mainThread.start();
         
         //lock to wait for the main gui to get the number of threads from the user.
-        
         synchronized(lock){
             try {
                 lock.wait();
