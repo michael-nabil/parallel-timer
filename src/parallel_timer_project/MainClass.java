@@ -17,9 +17,8 @@ import javafx.stage.Stage;
 
 
 public class MainClass {
-    static int threadsNumber; //hana5od el value bta3etha mn el startClass lama te3mel call lel setThreadNumber()
-    static Object lock = new Object();  //bymna3 el main method enaha tkamel mn8er ma el user yda5al el input
-    
+    static int threadsNumber; // we will read this value from the StartClass when it calls setThreadNumber()
+    static Object lock = new Object();  // prevents the main method from proceeding without receiving user input
     public static void main(String[] args){
 
         Thread mainThread = new Thread(() -> {
@@ -38,7 +37,7 @@ public class MainClass {
         }
             
         for (int i=0;i<threadsNumber;i++){
-            final int currentId = i;        // maynfa34 nesta5dem local variable gwa el: platform.raunlater ,lazem ykon final
+            final int currentId = i;        // we cannot use local variable inside: platform.raunlater ,it must be "final"
             Thread timerThread = new Thread(() -> {
                 Platform.runLater(()->{
                     TimerGui t = new TimerGui();
