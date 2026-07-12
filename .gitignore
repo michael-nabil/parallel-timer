@@ -1,0 +1,5 @@
+# compiled code
+/build/
+
+# private IDE settings
+/nbproject/private/
